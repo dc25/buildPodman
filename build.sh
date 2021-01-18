@@ -8,6 +8,7 @@ export PATH=$GOPATH/bin:$PATH
 mkdir -p $GOPATH
 chmod -R 777 $GOPATH
 rm -rf $GOPATH
+mkdir -p $GOPATH
 
 go get golang.org/x/tools/cmd/goimports
 
