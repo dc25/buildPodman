@@ -1,16 +1,15 @@
 #! /bin/bash
 
 ## This script is based on the instructions here : https://podman.io/getting-started/installation.html .   
-sudo apt install -y   make curl
-sudo apt install -y   libapparmor-dev
-sudo apt install -y libprotobuf-c-dev btrfs-progs 
-sudo apt install -y git   golang-go   go-md2man   iptables   libassuan-dev   libbtrfs-dev   libc6-dev   libdevmapper-dev   libglib2.0-dev   libgpgme-dev   libgpg-error-dev   libprotobuf-dev    libseccomp-dev   libselinux1-dev   libsystemd-dev   pkg-config   runc   uidmap
-sudo apt install -y slirp4netns
-sudo apt install -y fuse-overlayfs
-
 export GOPATH=~/go
 export GOCACHE="$(mktemp -d)"
+export PATH=$GOPATH/bin:$PATH
+
 mkdir -p $GOPATH
+chmod -R 777 $GOPATH
+rm -rf $GOPATH
+
+go get golang.org/x/tools/cmd/goimports
 
 sudo mkdir -p /etc/containers
 cd /etc/containers
@@ -18,13 +17,16 @@ sudo curl -L -o /etc/containers/registries.conf https://raw.githubusercontent.co
 sudo curl -L -o /etc/containers/policy.json https://raw.githubusercontent.com/containers/skopeo/master/default-policy.json
 
 cd $GOPATH
+rm -rf conmon
 git clone https://github.com/containers/conmon
 cd conmon/
 make
 sudo make podman
 
+rm -rf $GOPATH/src/github.com/containers/podman
 mkdir -p $GOPATH/src/github.com/containers/podman
 git clone https://github.com/containers/podman/ $GOPATH/src/github.com/containers/podman
 cd $GOPATH/src/github.com/containers/podman
+# git checkout `git rev-list -n 1 --first-parent --before="2021-01-13" master`
 make BUILDTAGS="selinux seccomp"
 sudo make install PREFIX=/usr
