@@ -5,12 +5,12 @@ sudo apt install -y   make curl
 sudo apt install -y   libapparmor-dev
 sudo apt install -y libprotobuf-c-dev btrfs-progs 
 
-sudo apt install -y \
-  golang-go   
+# sudo apt install -y \
+#   golang-go   \
+#   go-md2man   
 
 sudo apt install -y \
   git   \
-  go-md2man   \
   iptables   \
   libassuan-dev   \
   libbtrfs-dev   \
