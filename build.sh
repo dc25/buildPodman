@@ -12,10 +12,16 @@ mkdir -p $GOPATH
 
 go get golang.org/x/tools/cmd/goimports
 
+cd /tmp
+# download policy.json
+curl -L https://raw.githubusercontent.com/containers/skopeo/master/default-policy.json > policy.json
+
+# download registries.conf and add localhost to search
+curl -L https://raw.githubusercontent.com/projectatomic/registries/master/registries.fedora | \
+    sed -e "/^registries/s='docker.io'='localhost', &=" > registries.conf
+
 sudo mkdir -p /etc/containers
-cd /etc/containers
-sudo curl -L -o /etc/containers/registries.conf https://raw.githubusercontent.com/projectatomic/registries/master/registries.fedora
-sudo curl -L -o /etc/containers/policy.json https://raw.githubusercontent.com/containers/skopeo/master/default-policy.json
+sudo cp registries.conf policy.json /etc/containers
 
 cd $GOPATH
 rm -rf conmon
