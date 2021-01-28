@@ -6,8 +6,12 @@ export GOCACHE="$(mktemp -d)"
 export PATH=$GOPATH/bin:$PATH
 
 mkdir -p $GOPATH
-chmod -R 777 $GOPATH
-rm -rf $GOPATH
+chmod -R 777 $GOPATH > /dev/null 2>&1
+rm -rf $GOPATH > /dev/null 2>&1
+if [[ -e $GOPATH ]] ; then
+    echo unable to remove $GOPTATH
+    exit 1
+fi
 mkdir -p $GOPATH
 
 go get golang.org/x/tools/cmd/goimports
