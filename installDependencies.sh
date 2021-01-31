@@ -8,10 +8,7 @@ sudo apt install -y libprotobuf-c-dev btrfs-progs
 ## not provided by default on 20.10 (!) 
 sudo apt install -y gcc
 
-## removed for now to allow for more recent go version
-# sudo apt install -y \
-#   golang-go   \
-#   go-md2man   
+sudo apt install -y   golang
 
 sudo apt install -y \
   git   \
