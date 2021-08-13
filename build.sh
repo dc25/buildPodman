@@ -1,5 +1,7 @@
 #! /bin/bash
 
+sudo sysctl kernel.unprivileged_userns_clone=1
+
 ## This script is based on the instructions here : https://podman.io/getting-started/installation.html .   
 export GOPATH=~/go
 export GOCACHE="$(mktemp -d)"
@@ -41,3 +43,12 @@ cd $GOPATH/src/github.com/containers/podman
 # git checkout `git rev-list -n 1 --first-parent --before="2021-01-13" master`
 make BUILDTAGS="selinux seccomp"
 sudo make install PREFIX=/usr
+
+mkdir -p ~/.config/containers
+cat >> ~/.config/containers/storage.conf << EOF
+[storage]
+  driver = "overlay"
+
+[storage.options.overlay]
+mount_program = "/usr/bin/fuse-overlayfs"
+EOF
